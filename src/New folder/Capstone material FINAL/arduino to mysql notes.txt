@@ -1,0 +1,31 @@
+boolean MySQL_Connection::connect(54.174.119.3, 3306, Muser,
+                                  mpassword)
+
+BCV = serial.read.in() //BCV is the value read from the scanner (the barcode Value)
+
+char query[] = "SELECT * FROM MyDB.users WHERE Access = '1'&& BarcodeValue= BCV";
+if no users are returned, then it is either an invalid barcode value or the
+user does not have access.
+
+long head_count = 0;
+
+ // Initiate the query class instance
+  MySQL_Cursor *cur_mem = new MySQL_Cursor(&conn);
+  // Execute the query
+  cur_mem->execute(query);
+  // Fetch the columns (required) but we don't use them.
+  column_names *columns = cur_mem->get_columns();
+
+  // Read the row (we are only expecting the one)
+  do {
+    row = cur_mem->get_next_row();
+    if (row != NULL) {
+      *******head_count = atol(row->values[0])******
+	THIS IS THE PART THAT LETS THE ARDUINO KNOW IT'S A VALID USER
+	BECAUSE ONLY ONE WILL BE RETURNED THUS HEAD_COUNT SHOULD EQUAL 1 
+	IF ONLY ONE USER IS RETURNED
+
+    }
+  } while (row != NULL);
+  // Deleting the cursor also frees up memory used
+  delete cur_mem;

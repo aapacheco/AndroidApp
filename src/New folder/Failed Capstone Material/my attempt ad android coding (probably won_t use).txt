@@ -1,0 +1,66 @@
+//This is the beginning of the code I have added to this Java file //
+
+    //Creates the database to store the user login information
+    public class InfoOpenHelper extends SQLiteOpenHelper {
+        private static final int DATABASE_VERSION = 1;
+        public static final String DATABASE_NAME = "LoginInfo.db";
+
+
+        /* Inner class that defines the table contents */
+        public static abstract class InfoEntry implements BaseColumns {
+            public static final String TABLE_NAME = "entry";
+            public static final String COLUMN_NAME_ENTRY_ID = "entryid";
+            public static final String COLUMN_NAME_USERNAME = "username";
+            public static final String COLUMN_NAME_FIRSTNAME = "first name";
+            public static final String COLUMN_NAME_LASTNAME = "lastname";
+            public static final String COLUMN_NAME_PASSWORD = "password";
+            private static final String TEXT_TYPE = " TEXT";
+            private static final String COMMA_SEP = ",";
+
+            private static final String SQL_CREATE_ENTRIES =
+                    "CREATE TABLE " + InfoEntry.TABLE_NAME +
+                            " (" + InfoEntry._ID + " INTEGER PRIMARY KEY," +InfoEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                            InfoEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP + InfoEntry.COLUMN_NAME_USERNAME " )";
+        }
+        public InfoOpenHelper(Context context) {
+            super(context, null, null, DATABASE_VERSION);
+        }
+
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            // This database is only a cache for online data, so its upgrade policy is
+            // to simply to discard the data and start over
+            db.execSQL(SQL_DELETE_ENTRIES);
+            onCreate(db);
+        }
+
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(SQL_CREATE_ENTRIES);
+        }
+    }
+// instantiating subclass of the database to access it
+    InfoOpenHelper mDbHelper = new InfoOpenHelper(getContext());
+
+    // Gets the data repository in write mode
+    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+    // Create a new map of values, where column names are the keys
+    ContentValues values = new ContentValues();
+    values.put(FeedEntry.COLUMN_NAME_ENTRY_ID, id);
+    values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+    values.put(FeedEntry.COLUMN_NAME_CONTENT, content);
+
+    // Insert the new row, returning the primary key value of the new row
+    long newRowId;
+    newRowId = db.insert(
+    FeedEntry.TABLE_NAME,
+    FeedEntry.COLUMN_NAME_NULLABLE,
+    values);
+
+    // Allows the app to continue to the Login Page from the Home Screen //
+    public void goToActivity2(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    // This is the end of the code I have added to this Java file //
+    

@@ -1,0 +1,37 @@
+int datao = 12; //data out pin is pin 12
+int datai = 4; //data in pin is pin 4
+int value = 0; //both pins start ad a LOW value, operating on ActiveHigh
+String incoming = ""; //default value for incoming data before data is read
+void setup() 
+{
+  pinMode(datao, OUTPUT); //datao is the output connecting to the lock
+  pinMode(datai, INPUT);  //datai is the input acting as a switch to verify access from the scanner.
+  if(datai == 1)
+  {
+    Serial.begin();
+    incoming.reserve(300); //reserves 300bytes for the incoming data
+  }
+}
+
+void loop() 
+{
+  val = digitalRead(datai); //reads the input pin
+  digitalWrite(datao, val); //if access granted, give power to the lock to open it
+  if(Serial.available() > 0) //gets the number of bytes available for reading
+  {
+    incoming = stream.readString(&); //reads serial buffer characters into a string, terminanting when the target(&) is found
+  }
+}
+void serialEvent() //occurs whenever new data comes through the receiving serial transmission
+{
+  while(Serial.available())  
+  {
+    char newRead = (char)Serial.read(); //get the new incoming data
+    incomingString += newRead; //add it to the String
+    int (incomingString); //converts the incoming string into an integer
+    if(int = 739)         //if the incoming string has a totla value of 739, the door will unlock
+    {
+      val = 1;
+    }
+  }
+}
